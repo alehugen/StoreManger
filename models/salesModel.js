@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-const add = async (...sales) => {
+const add = async (sales) => {
   sales.forEach(async ({ productId, quantity }) => {
     if (!productId || !quantity.length) return null;
 
