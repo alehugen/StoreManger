@@ -1,7 +1,7 @@
 const connection = require('./connection');
 
 const add = async (name, quantity) => {
-  const [row] = await connection.query(
+  const [row] = await connection.execute(
     'INSERT INTO products (name, quantity) VALUES (?,?)',
     [name, quantity],
   );
@@ -10,7 +10,7 @@ const add = async (name, quantity) => {
 };
 
 const getAll = async () => {
-  const [row] = await connection.query(
+  const [row] = await connection.execute(
     'SELECT * FROM products',
   );
 
@@ -18,7 +18,7 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const [row] = await connection.query(
+  const [row] = await connection.execute(
     'SELECT * FROM products WHERE id = ?',
     [id],
   );
@@ -28,17 +28,19 @@ const getById = async (id) => {
   return row;
 };
 
+
 const update = async (id, name, quantity) => {
-  await connection.query(
+  const [row] = await connection.execute(
     'UPDATE products SET name = ?, quantity = ? WHERE id = ?',
     [name, quantity, id],
   );
+  return { id: row[0].insertId, name, quantity };
 };
 
 const remove = async (id) => {
   const product = await getById(id);
   if (!product) return null;
-  await connection.query('DELETE FROM products WHERE id = ?', [id]);
+  await connection.execute('DELETE FROM products WHERE id = ?', [id]);
   return product;
 };
 
