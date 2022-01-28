@@ -27,6 +27,8 @@ const validateQuantity = (req, res, next) => {
     return res.status(422)
     .json({ message: '"quantity" must be a number larger than or equal to 1' });
   }
+
   next();
 };
+
 module.exports = { validateName, validateQuantity };

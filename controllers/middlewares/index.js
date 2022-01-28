@@ -1,4 +1,4 @@
-const domainError = require('./domain');
+const domainError = require('./domain-error');
 const error = require('./error');
 
 module.exports = {

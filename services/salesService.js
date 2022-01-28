@@ -1,27 +1,51 @@
 const salesModel = require('../models/salesModel');
+const productsService = require('./productsService');
 
-const add = async (...sales) => salesModel.add(sales);
+const add = async (sales) => salesModel.add(sales);
 
 const getAll = async () => salesModel.getAll();
 
 const getById = async (id) => {
   const sale = await salesModel.getById(id);
 
-  if (!sale) {
-    throw new ReferenceError('Sale not found');
-  }
+  return sale;
 };
 
-const update = async ({ id, quantity }) => {
-  await getById(id);
+const getAllFromSP = async () => salesModel.getAllFromSP();
 
+const updateProductQuantity = async (sales) => {
+  const updateQuantity = sales.map(async (sale) => {
+    const { product_id: id, quantity: saleQuantity } = sale;
+
+    const product = await productsService.getById(id);
+    product.quantity -= saleQuantity;
+
+    await productsService.update(product);
+  });
+  await Promise.all(updateQuantity);
+
+  const createSale = await add(sales);
+
+  return createSale;
+};
+
+const update = async ({ product_id: id, quantity }) => {
   const updatedSale = await salesModel.update(id, quantity);
 
   return updatedSale;
 };
 
 const remove = async (id) => {
-  await salesModel.remove(id);
+  const [sale] = await getById(id);
+
+  const product = await productsService.getById(sale.product_id);
+  product.quantity += sale.quantity;
+
+  const removeSale = await salesModel.remove(id);
+
+  await productsService.update(product);
+
+  return removeSale;
 };
 
-module.exports = { add, getAll, getById, update, remove };
+module.exports = { add: updateProductQuantity, getAll, getById, getAllFromSP, update, remove };

@@ -33,6 +33,7 @@ const update = async (id, name, quantity) => {
     'UPDATE products SET name = ?, quantity = ? WHERE id = ?',
     [name, quantity, id],
   );
+
   return { id, name, quantity };
 };
 

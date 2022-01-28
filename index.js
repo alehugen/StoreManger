@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const middlewares = require('./controllers/middlewares');
 const productsController = require('./controllers/productsController');
-/* const salesController = require('./controllers/pr'); */
+const salesController = require('./controllers/salesController');
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productsController);
-/* app.use('/sales', salesController); */
+app.use('/sales', salesController);
 
 app.use(middlewares.domainError);
 app.use(middlewares.error);

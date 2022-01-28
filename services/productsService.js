@@ -1,4 +1,4 @@
-const productsModel = require('../models/productModel');
+const productsModel = require('../models/productsModel');
 
 const getAll = async () => productsModel.getAll();
 
@@ -35,4 +35,10 @@ const remove = async (id) => {
   await productsModel.remove(id);
 };
 
-module.exports = { getAll, getById, add, update, partialUpdate, remove };
+const checkProductQuantity = async (id) => {
+  const product = await getById(id);
+
+  return product.quantity;
+};
+
+module.exports = { getAll, getById, add, update, partialUpdate, remove, checkProductQuantity };
