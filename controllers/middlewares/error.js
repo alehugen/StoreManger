@@ -1,11 +1,7 @@
-module.exports = (err, _req, res, next) => {
-    const errorMap = {
-      notFound: 404,
-    };
-  
-    const status = errorMap[err.code];
-  
-    if (!status) return next(err);
-  
-    res.status(status).json(err);
+module.exports = (err, _req, res, _next) => {
+    console.error(err);
+    res.status(500).json({
+      code: 'internal_server_error',
+      message: 'error processing request',
+    });
   };
