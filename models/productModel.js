@@ -25,16 +25,15 @@ const getById = async (id) => {
 
   if (!row.length) return null;
 
-  return row;
+  return row[0];
 };
 
-
 const update = async (id, name, quantity) => {
-  const [row] = await connection.execute(
+  await connection.execute(
     'UPDATE products SET name = ?, quantity = ? WHERE id = ?',
     [name, quantity, id],
   );
-  return { id: row[0].insertId, name, quantity };
+  return { id, name, quantity };
 };
 
 const remove = async (id) => {

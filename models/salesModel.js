@@ -15,6 +15,13 @@ const add = async (sales) => {
       `,
       [row.insertId, productId, quantity],
     );
+
+    const itemsSold = sales.map((sale) => ({ productId: sale.id, quantity: sale.quantity }));
+
+    return {
+      id: row.insertId,
+      itemsSold,
+    };
   });
 };
 

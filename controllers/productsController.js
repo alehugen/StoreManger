@@ -22,7 +22,7 @@ Products.get(
   rescue(async (_req, res) => {
     const products = await productsService.getAll();
 
-    res.status(200).body(products);
+    res.status(200).json(products);
   }),
 );
 
@@ -38,12 +38,17 @@ Products.get(
 
 Products.put(
   '/:id',
-  validateName,
   validateQuantity,
   rescue(async (req, res) => {
     const { id } = req.params;
 
     const { name, quantity } = req.body;
+
+    if (!name) return res.status(400).json({ message: '"name" is required' });
+    if (name.length < 5) {
+      return res.status(422)
+      .json({ message: '"name" length must be at least 5 characters long' });
+    }
 
     const product = await productsService.getById(id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
