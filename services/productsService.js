@@ -38,6 +38,8 @@ const remove = async (id) => {
 const checkProductQuantity = async (id) => {
   const product = await getById(id);
 
+  if (!product) return null;
+
   return product.quantity;
 };
 

@@ -8,13 +8,13 @@ describe('Testing the products table', () => {
     quantity: 1,
   };
 
-  before(async () => {
+  beforeEach(async () => {
     const execute = [{ insertId: 1 }];
 
     sinon.stub(connection, 'execute').resolves(execute);
   });
 
-  after(async () => {
+  afterEach(async () => {
     connection.execute.restore();
   });
 

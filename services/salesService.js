@@ -36,6 +36,7 @@ const update = async ({ product_id: id, quantity }) => {
 };
 
 const remove = async (id) => {
+  if (!id) return null;
   const [sale] = await getById(id);
 
   const product = await productsService.getById(sale.product_id);
@@ -48,4 +49,12 @@ const remove = async (id) => {
   return removeSale;
 };
 
-module.exports = { add: updateProductQuantity, getAll, getById, getAllFromSP, update, remove };
+module.exports = {
+  add: updateProductQuantity,
+  insert: add,
+  getAll,
+  getById,
+  getAllFromSP,
+  update,
+  remove,
+};
